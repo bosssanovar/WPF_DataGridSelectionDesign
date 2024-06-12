@@ -24,7 +24,7 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow2 : Window
     {
-        private const int InitCulumnCount = 640;
+        private const int InitCulumnCount = 50;
 
         public ObservableCollection<Detail> Items { get; private set; } = new ObservableCollection<Detail>();
 
@@ -49,8 +49,6 @@ namespace WpfApp1
 
             InitColumns(InitCulumnCount);
 
-            squares.ScrollViewer = previewScroll;
-
             grid.Visibility = Visibility.Visible;
 
             Dispatcher.InvokeAsync(() =>
@@ -64,7 +62,6 @@ namespace WpfApp1
         private void InitScrollSynchronizer()
         {
             var scrollList = new List<ScrollViewer>();
-            scrollList.Add(previewScroll);
             var gridScroll = DataGridHelper.GetScrollViewer(grid);
             if (gridScroll is not null)
             {
@@ -137,8 +134,6 @@ namespace WpfApp1
                 var rowIndex = DataGridHelper.GetSelectedRowIndex(grid);
 
                 Items[rowIndex].Invert(columnIndex);
-
-                UpdatePreview();
             }
         }
 
@@ -189,8 +184,6 @@ namespace WpfApp1
         {
             var rowIndex = DataGridHelper.GetSelectedRowIndex(grid);
             Items[rowIndex].SetAll(true);
-
-            UpdatePreview();
         }
 
         private void AreaOn(object sender, RoutedEventArgs e)
@@ -199,276 +192,6 @@ namespace WpfApp1
             foreach (var index in indexes)
             {
                 Items[index.RowIndex].SetOn(index.ColumnIndex);
-            }
-
-            UpdatePreview();
-        }
-
-        #endregion
-
-        #region ミニマップ
-
-        #region 表示位置
-
-        private void Thumb_DragStarted(object sender, DragStartedEventArgs e)
-        {
-            var thumb = sender as Thumb;
-            if (null != thumb)
-            {
-                var border = thumb.Template.FindName("Thumb_Border", thumb) as Border;
-                if (null != border)
-                {
-                    border.BorderThickness = new Thickness(1);
-
-                    e.Handled = true;
-                }
-            }
-        }
-
-        private void Thumb_DragCompleted(object sender, DragCompletedEventArgs e)
-        {
-            var thumb = sender as Thumb;
-            if (null != thumb)
-            {
-                var border = thumb.Template.FindName("Thumb_Border", thumb) as Border;
-                if (null != border)
-                {
-                    border.BorderThickness = new Thickness(0);
-
-                    e.Handled = true;
-                }
-            }
-        }
-
-        private void Thumb_DragDelta(object sender, DragDeltaEventArgs e)
-        {
-            var thumb = sender as Thumb;
-            if (null != thumb)
-            {
-                var x = Canvas.GetRight(thumb) - e.HorizontalChange;
-                var y = Canvas.GetBottom(thumb) - e.VerticalChange;
-
-                var canvas = thumb.Parent as Canvas;
-                if (null != canvas)
-                {
-                    x = Math.Max(x, 0);
-                    y = Math.Max(y, 0);
-                    x = Math.Min(x, canvas.ActualWidth - thumb.ActualWidth);
-                    y = Math.Min(y, canvas.ActualHeight - thumb.ActualHeight);
-                }
-
-                Canvas.SetRight(thumb, x);
-                Canvas.SetBottom(thumb, y);
-
-                e.Handled = true;
-            }
-        }
-
-        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            squares.InvalidateVisual();
-            MoveScroll();
-        }
-
-        #endregion
-
-        #region スクロール
-
-        private void Thumb_DragStarted2(object sender, DragStartedEventArgs e)
-        {
-            var thumb = sender as Thumb;
-            if (null != thumb)
-            {
-                var border = thumb.Template.FindName("Area_Thumb_Border", thumb) as Border;
-                if (null != border)
-                {
-                    border.BorderThickness = new Thickness(1);
-                }
-
-                gridPanel.Children.Remove(grid);
-
-                previewScroll.Visibility = Visibility.Visible;
-
-                squares.InvalidateVisual();
-
-                e.Handled = true;
-            }
-        }
-
-        private void Thumb_DragCompleted2(object sender, DragCompletedEventArgs e)
-        {
-            Cursor = Cursors.Wait;
-
-            var thumb = sender as Thumb;
-            if (null != thumb)
-            {
-                var border = thumb.Template.FindName("Area_Thumb_Border", thumb) as Border;
-                if (null != border)
-                {
-                    border.BorderThickness = new Thickness(0);
-                }
-
-                gridPanel.Children.Insert(1, grid);
-
-                Dispatcher.InvokeAsync(() =>
-                {
-                    if (gridPanel.Children.Contains(grid))  // ドラッグ開始終了の連続動作時にプレビュー表示されなくなる問題回避のため
-                    {
-                        previewScroll.Visibility = Visibility.Collapsed;
-                    }
-
-                    Cursor = null;
-                }, System.Windows.Threading.DispatcherPriority.Background);
-
-                e.Handled = true;
-            }
-        }
-
-        private void Thumb_DragDelta2(object sender, DragDeltaEventArgs e)
-        {
-            VerticalScrollDelta(sender, e);
-            HorizontalScrollDelta(sender, e);
-
-            e.Handled = true;
-        }
-
-        #endregion
-
-        #endregion
-
-        #region ダミー表示
-
-        private void UpdatePreview()
-        {
-            squares.Objects.Clear();
-
-            var rowMax = Items.Count;
-            var colmunMax = Items[0].Values.Count;
-
-            for (int rowIndex = 0; rowIndex < rowMax; rowIndex++)
-            {
-                for (int columnIndex = 0; columnIndex < colmunMax; columnIndex++)
-                {
-                    if (Items[rowIndex].Values[columnIndex].Value)
-                    {
-                        Square square = CreateSquare(rowIndex, columnIndex);
-
-                        squares.Objects.Add(square);
-                    }
-                }
-            }
-        }
-
-        private static Square CreateSquare(int rowIndex, int columnIndex)
-        {
-            var square = new Square();
-            square.Width = 16;
-            square.Height = 16;
-            Canvas.SetTop(square, 28 * rowIndex + 6);
-            Canvas.SetLeft(square, 28 * columnIndex + 6);
-            return square;
-        }
-
-        private void previewScroll_ScrollChanged(object sender, ScrollChangedEventArgs e)
-        {
-            squares.InvalidateVisual();
-
-            MoveScroll();
-        }
-
-        private void MoveScroll()
-        {
-            var ratios = GetScrollRatio(previewScroll);
-            MoveHorizontalScrollThumb(ratios);
-            MoveVerticalScrollThumb(ratios);
-        }
-
-        private static (double HorizontalRatio, double VerticalRatio) GetScrollRatio(ScrollViewer scroll)
-        {
-            var gridWidth = scroll.ScrollableWidth;
-            var gridHeight = scroll.ScrollableHeight;
-
-            return ((scroll.HorizontalOffset / gridWidth), (scroll.VerticalOffset / gridHeight));
-        }
-
-        #endregion
-
-        #region スクロールバー　垂直
-
-        private void MoveVerticalScrollThumb((double HorizontalRatio, double VerticalRatio) ratios)
-        {
-            var y = verticalScrollCanvas.ActualHeight * ratios.VerticalRatio;
-            Canvas.SetTop(verticalScrollThumb, y);
-        }
-
-        private void verticalScrollThumb_DragDelta(object sender, DragDeltaEventArgs e)
-        {
-            VerticalScrollDelta(sender, e);
-
-            e.Handled = true;
-        }
-
-        private void VerticalScrollDelta(object sender, DragDeltaEventArgs e)
-        {
-            var thumb = sender as Thumb;
-            if (null != thumb)
-            {
-
-                var y = Canvas.GetTop(thumb) + e.VerticalChange;
-
-                var canvas = thumb.Parent as Canvas;
-                if (null != canvas)
-                {
-
-                    y = Math.Max(y, 0);
-                    y = Math.Min(y, canvas.ActualHeight - thumb.ActualHeight);
-
-                    Canvas.SetTop(thumb, y);
-
-                    DataGridHelper.MoveVerticalScrollTo(grid, Canvas.GetTop(thumb) / canvas.ActualHeight);
-
-                    previewScroll.ScrollToVerticalOffset(previewScroll.ScrollableHeight * (Canvas.GetTop(thumb) / canvas.ActualHeight));
-                }
-            }
-        }
-
-        #endregion
-
-        #region スクロールバー　水平
-
-        private void MoveHorizontalScrollThumb((double HorizontalRatio, double VerticalRatio) ratios)
-        {
-            var x = horizontalScrollCanvas.ActualWidth * ratios.HorizontalRatio;
-            Canvas.SetLeft(horizontalScrollThumb, x);
-        }
-
-        private void horizontalScrollThumb_DragDelta(object sender, DragDeltaEventArgs e)
-        {
-            HorizontalScrollDelta(sender, e);
-
-            e.Handled = true;
-        }
-
-        private void HorizontalScrollDelta(object sender, DragDeltaEventArgs e)
-        {
-            var thumb = sender as Thumb;
-            if (null != thumb)
-            {
-                var x = Canvas.GetLeft(thumb) + e.HorizontalChange;
-
-                var canvas = thumb.Parent as Canvas;
-                if (null != canvas)
-                {
-
-                    x = Math.Max(x, 0);
-                    x = Math.Min(x, canvas.ActualWidth - thumb.ActualWidth);
-
-                    Canvas.SetLeft(thumb, x);
-
-                    DataGridHelper.MoveHorizontalScrollTo(grid, Canvas.GetLeft(thumb) / canvas.ActualWidth);
-
-                    previewScroll.ScrollToHorizontalOffset(previewScroll.ScrollableWidth * (Canvas.GetLeft(thumb) / canvas.ActualWidth));
-                }
             }
         }
 
