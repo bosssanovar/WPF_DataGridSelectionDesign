@@ -8,7 +8,7 @@
         Title="MainWindow" Height="500" Width="600" d:Width="600"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
         WindowState="Maximized" SizeChanged="Window_SizeChanged"
-        Background="#202020">
+        Background="Black">
     <Grid x:Name="gridPanel" Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -38,8 +38,7 @@
                   CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeColumns="False"
                   CanUserResizeRows="False" CanUserSortColumns="False"
                   VirtualizingPanel.ScrollUnit="Pixel" MaxWidth="2000" MaxHeight="1200"
-                  HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"
-                  Background="Transparent">
+                  HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden">
             <DataGrid.InputBindings>
                 <KeyBinding Gesture="Ctrl+A" Command="ApplicationCommands.NotACommand"/>
             </DataGrid.InputBindings>
@@ -47,10 +46,11 @@
                 <Style TargetType="DataGridCell">
                     <EventSetter Event="PreviewMouseLeftButtonUp" Handler="DataGridCell_MouseLeftButtonUp"/>
                     <EventSetter Event="PreviewMouseRightButtonDown" Handler="DataGridCell_PreviewMouseRightButtonDown"/>
+                    <Setter Property="BorderThickness" Value="0.3"/>
+                    <Setter Property="BorderBrush" Value="#1d1f20" />
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter Property="Background" Value="#22FFFFFF" />
-                            <Setter Property="BorderBrush" Value="#22FFFFFF" />
                             <Setter Property="Foreground" Value="Black" />
                         </Trigger>
                     </Style.Triggers>
@@ -58,9 +58,16 @@
             </DataGrid.CellStyle>
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">
-                    <Setter Property="Background" Value="#202020"/>
                 </Style>
             </DataGrid.RowStyle>
+            <DataGrid.Style>
+                <Style TargetType="DataGrid">
+                    <Setter Property="RowBackground" Value="#2c2d2f"/>
+                    <Setter Property="AlternatingRowBackground" Value="#333436"/>
+                    <Setter Property="HorizontalGridLinesBrush" Value="#1d1f20"/>
+                    <Setter Property="VerticalGridLinesBrush" Value="#1d1f20"/>
+                </Style>
+            </DataGrid.Style>
         </DataGrid>
 
         <!--閲覧ビュー-->
