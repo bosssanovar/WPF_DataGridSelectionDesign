@@ -36,7 +36,7 @@
                   CanUserResizeRows="False" CanUserSortColumns="False"
                   VirtualizingPanel.ScrollUnit="Pixel" MaxWidth="2000" MaxHeight="1200"
                   HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"
-                  HorizontalAlignment="Left" VerticalAlignment="Top"
+                  HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="0"
                   SelectedCellsChanged="grid_SelectedCellsChanged">
             <DataGrid.InputBindings>
                 <KeyBinding Gesture="Ctrl+A" Command="ApplicationCommands.NotACommand"/>
