@@ -47,6 +47,14 @@
                 <Style TargetType="DataGridCell">
                     <EventSetter Event="PreviewMouseLeftButtonUp" Handler="DataGridCell_MouseLeftButtonUp"/>
                     <EventSetter Event="PreviewMouseRightButtonDown" Handler="DataGridCell_PreviewMouseRightButtonDown"/>
+                    <Style.Triggers>
+                        <!-- Highlight selected rows -->
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#22FFFFFF" />
+                            <Setter Property="BorderBrush" Value="#22FFFFFF" />
+                            <Setter Property="Foreground" Value="Black" />
+                        </Trigger>
+                    </Style.Triggers>
                 </Style>
             </DataGrid.CellStyle>
             <DataGrid.RowStyle>
