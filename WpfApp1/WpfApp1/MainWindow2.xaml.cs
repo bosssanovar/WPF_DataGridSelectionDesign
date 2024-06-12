@@ -241,8 +241,6 @@ namespace WpfApp1
 
         Rect rect;
 
-        readonly Thumb thumb;
-
         readonly VisualCollection visualChildren;
 
         Point mousePosition;
@@ -255,7 +253,6 @@ namespace WpfApp1
             set
             {
                 rect = value;
-                UpdateThumbPos(rect);
                 mousePosition = rect.BottomRight;
                 InvalidateVisual();
             }
@@ -270,37 +267,6 @@ namespace WpfApp1
             visualChildren = new VisualCollection(this);
             var border = new FrameworkElementFactory(typeof(Border));
             border.SetValue(Border.BackgroundProperty, new SolidColorBrush(Color.FromRgb(0xec, 0xa1, 0x2a)));
-            thumb = new Thumb
-            {
-                Cursor = Cursors.Cross,
-                Background = new SolidColorBrush(Color.FromRgb(0xec, 0xa1, 0x2a)),
-                Height = SIZE,
-                Template = new ControlTemplate(typeof(Thumb)) { VisualTree = border },
-                Width = SIZE
-            };
-            visualChildren.Add(thumb);
-
-            UpdateThumbPos(rect);
-
-            thumb.DragDelta += thumb_DragDelta;
-        }
-
-        void UpdateThumbPos(Rect rect)
-        {
-            if (thumb == null) return;
-            mousePosition = rect.BottomRight;
-            mousePosition.Offset(-SIZE / 2 - 1, -SIZE / 2 - 1);
-            thumb.Arrange(new Rect(mousePosition, new Size(SIZE, SIZE)));
-        }
-
-        void thumb_DragDelta(object sender, DragDeltaEventArgs e)
-        {
-            mousePosition.Offset(e.HorizontalChange, e.VerticalChange);
-            IInputElement inputElt = dataGrid.InputHitTest(mousePosition);
-            var tb = inputElt as TextBlock;
-            if (tb == null) return;
-            Point bottomRight = dataGrid.PointFromScreen(tb.PointToScreen(new Point(tb.ActualWidth + 1, tb.ActualHeight + 1)));
-            Rect = new Rect(rect.TopLeft, bottomRight);
         }
 
         protected override int VisualChildrenCount
@@ -332,11 +298,11 @@ namespace WpfApp1
             guidelines.GuidelinesY.Add(rangeBorderRect.Bottom + halfPenWidth);
 
             Point p1 = rangeBorderRect.BottomRight;
-            p1.Offset(0, -4);
+            p1.Offset(0, +1);
             guidelines.GuidelinesY.Add(p1.Y + halfPenWidth);
 
             Point p2 = rangeBorderRect.BottomRight;
-            p2.Offset(-4, 0);
+            p2.Offset(+1, 0);
             guidelines.GuidelinesX.Add(p2.X + halfPenWidth);
 
             drawingContext.PushGuidelineSet(guidelines);
