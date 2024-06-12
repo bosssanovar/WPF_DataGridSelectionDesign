@@ -86,11 +86,11 @@ namespace WpfApp1
                 var binding = new Binding($"Values[{columnIndex}].Value");
                 binding.Converter = converter;
 
-                var factory = new FrameworkElementFactory(typeof(Rectangle));
-                factory.SetValue(Rectangle.HeightProperty, 10.0);
-                factory.SetValue(Rectangle.WidthProperty, 10.0);
-                factory.SetValue(Rectangle.FillProperty, Brushes.LightSkyBlue);
-                factory.SetBinding(Rectangle.VisibilityProperty, binding);
+                var factory = new FrameworkElementFactory(typeof(Ellipse));
+                factory.SetValue(Ellipse.HeightProperty, 15.0);
+                factory.SetValue(Ellipse.WidthProperty, 15.0);
+                factory.SetValue(Ellipse.FillProperty, Brushes.Orange);
+                factory.SetBinding(Ellipse.VisibilityProperty, binding);
 
                 var dataTemplate = new DataTemplate();
                 dataTemplate.VisualTree = factory;
