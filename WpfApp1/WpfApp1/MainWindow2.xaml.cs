@@ -30,6 +30,8 @@ namespace WpfApp1
 
         private ScrollSynchronizer? _scrollSynchronizer;
 
+        public ReactivePropertySlim<bool> IsDataGridEnabled { get; } = new(true);
+
         public MainWindow2()
         {
             InitializeComponent();
@@ -264,9 +266,6 @@ namespace WpfApp1
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            Canvas.SetRight(map, 0);
-            Canvas.SetBottom(map, 0);
-
             squares.InvalidateVisual();
             MoveScroll();
         }
@@ -333,20 +332,6 @@ namespace WpfApp1
             e.Handled = true;
         }
 
-        private void MoveMiniMapThumb((double HorizontalRatio, double VerticalRatio) ratios)
-        {
-            var mapCanvas = map.Template.FindName("Area_Canvas", map) as Canvas;
-            if (null == mapCanvas) return;
-            var mapThumb = map.Template.FindName("Area_Thumb", map) as Thumb;
-            if (null == mapThumb) return;
-
-            var x = mapCanvas.ActualWidth * ratios.HorizontalRatio;
-            var y = mapCanvas.ActualHeight * ratios.VerticalRatio;
-
-            Canvas.SetLeft(mapThumb, x);
-            Canvas.SetTop(mapThumb, y);
-        }
-
         #endregion
 
         #endregion
@@ -394,7 +379,6 @@ namespace WpfApp1
         private void MoveScroll()
         {
             var ratios = GetScrollRatio(previewScroll);
-            MoveMiniMapThumb(ratios);
             MoveHorizontalScrollThumb(ratios);
             MoveVerticalScrollThumb(ratios);
         }

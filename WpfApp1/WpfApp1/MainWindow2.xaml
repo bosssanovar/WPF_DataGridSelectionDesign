@@ -11,6 +11,7 @@
     <Grid x:Name="gridPanel" Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -19,10 +20,15 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Text="DataGrid表示初期化中..." FontSize="20"/>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5">
+            <RadioButton Content="Enabled" Margin="5" IsChecked="{Binding IsDataGridEnabled.Value}"/>
+            <RadioButton Content="Disabled" Margin="5"/>
+        </StackPanel>
+
+        <TextBlock Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Text="DataGrid表示初期化中..." FontSize="20"/>
 
         <!--設定グリッド-->
-        <DataGrid x:Name="grid" Grid.Row="1" Margin="5, 5, 0, 0" AutoGenerateColumns="False" Visibility="Collapsed"
+        <DataGrid x:Name="grid" Grid.Row="2" Margin="5, 5, 0, 0" AutoGenerateColumns="False" Visibility="Collapsed"
                   EnableColumnVirtualization="True" EnableRowVirtualization="True"
                   VirtualizingPanel.IsVirtualizing="True" ScrollViewer.CanContentScroll="True" VirtualizingPanel.VirtualizationMode="Recycling"
                   ItemsSource="{Binding Items}" RowHeight="28" HeadersVisibility="None" ColumnWidth="28"
@@ -43,7 +49,7 @@
         </DataGrid>
 
         <!--閲覧ビュー-->
-        <Border Grid.Row="1" Margin="5, 5, 0, 0" BorderBrush="Black" BorderThickness="1">
+        <Border Grid.Row="2" Margin="5, 5, 0, 0" BorderBrush="Black" BorderThickness="1">
             <ScrollViewer x:Name="previewScroll" Visibility="Hidden"
                       HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"
                       ScrollChanged="previewScroll_ScrollChanged">
@@ -53,50 +59,8 @@
             </ScrollViewer>
         </Border>
 
-        <!--ミニマップ-->
-        <Canvas Grid.Row="1" Margin="5">
-            <Thumb x:Name="map" Width="200" Height="200"
-                   Canvas.Right="0"
-                   Canvas.Bottom="0"
-                   DragStarted="Thumb_DragStarted"
-                   DragCompleted="Thumb_DragCompleted"
-                   DragDelta="Thumb_DragDelta">
-                <Thumb.Template>
-                    <ControlTemplate>
-                        <Border x:Name="Thumb_Border" BorderBrush="Red" BorderThickness="0" Background="#99000000">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-
-                                <TextBlock Margin="5" HorizontalAlignment="Center" Text="ミニマップ" Foreground="White"/>
-
-                                <Canvas x:Name="Area_Canvas" Grid.Row="1" Margin="5">
-                                    <Thumb x:Name="Area_Thumb" Width="50" Height="50"
-                                           Canvas.Left="0"
-                                           Canvas.Top="0"
-                                           DragStarted="Thumb_DragStarted2"
-                                           DragCompleted="Thumb_DragCompleted2"
-                                           DragDelta="Thumb_DragDelta2">
-                                        <Thumb.Template>
-                                            <ControlTemplate>
-                                                <Border x:Name="Area_Thumb_Border" BorderBrush="Red" BorderThickness="0" Background="#99000000">
-
-                                                </Border>
-                                            </ControlTemplate>
-                                        </Thumb.Template>
-                                    </Thumb>
-                                </Canvas>
-                            </Grid>
-                        </Border>
-                    </ControlTemplate>
-                </Thumb.Template>
-            </Thumb>
-        </Canvas>
-
         <!--スクロールバー　垂直-->
-        <Canvas x:Name="verticalScrollCanvas" Grid.Row="1" Grid.Column="1" Width="20" Margin="0, 5" Background="#F0F0F0">
+        <Canvas x:Name="verticalScrollCanvas" Grid.Row="2" Grid.Column="1" Width="20" Margin="0, 5" Background="#F0F0F0">
             <Thumb x:Name="verticalScrollThumb" Width="20" Height="50"
                    Canvas.Left="0" Canvas.Top="0"
                    DragStarted="Thumb_DragStarted2" DragCompleted="Thumb_DragCompleted2" DragDelta="verticalScrollThumb_DragDelta">
@@ -111,7 +75,7 @@
         </Canvas>
 
         <!--スクロールバー　水平-->
-        <Canvas x:Name="horizontalScrollCanvas" Grid.Row="2" Height="20" Margin="5, 0" Background="#F0F0F0">
+        <Canvas x:Name="horizontalScrollCanvas" Grid.Row="3" Height="20" Margin="5, 0" Background="#F0F0F0">
             <Thumb x:Name="horizontalScrollThumb" Width="50" Height="20"
                    Canvas.Left="0" Canvas.Top="0"
                    DragStarted="Thumb_DragStarted2" DragCompleted="Thumb_DragCompleted2" DragDelta="horizontalScrollThumb_DragDelta">
