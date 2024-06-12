@@ -256,13 +256,9 @@ namespace WpfApp1
 
     internal class FillHandleAdorner : Adorner
     {
-        const int SIZE = 5;
-
         Rect rect;
 
         readonly VisualCollection visualChildren;
-
-        Point mousePosition;
 
         System.Windows.Controls.DataGrid dataGrid;
 
@@ -272,7 +268,6 @@ namespace WpfApp1
             set
             {
                 rect = value;
-                mousePosition = rect.BottomRight;
                 InvalidateVisual();
             }
         }
