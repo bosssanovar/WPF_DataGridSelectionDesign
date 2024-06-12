@@ -86,7 +86,7 @@ namespace WpfApp1
                 var factory = new FrameworkElementFactory(typeof(Ellipse));
                 factory.SetValue(Ellipse.HeightProperty, 15.0);
                 factory.SetValue(Ellipse.WidthProperty, 15.0);
-                factory.SetValue(Ellipse.FillProperty, new SolidColorBrush(Color.FromRgb(0xd4, 0xb0, 0x45)));
+                factory.SetValue(Ellipse.FillProperty, new SolidColorBrush(Color.FromRgb(0xe2, 0xaf, 0x42)));
                 factory.SetBinding(Ellipse.VisibilityProperty, binding);
 
                 var dataTemplate = new DataTemplate();
