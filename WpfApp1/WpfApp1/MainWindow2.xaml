@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="600" d:Width="600"
         DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
-        WindowState="Maximized" SizeChanged="Window_SizeChanged">
+        WindowState="Maximized" SizeChanged="Window_SizeChanged"
+        Background="#202020">
     <Grid x:Name="gridPanel" Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -21,11 +22,12 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5">
-            <RadioButton Content="Enabled" Margin="5" IsChecked="{Binding IsDataGridEnabled.Value}"/>
-            <RadioButton Content="Disabled" Margin="5"/>
+            <RadioButton Content="Enabled" Margin="5" Foreground="White" IsChecked="{Binding IsDataGridEnabled.Value}"/>
+            <RadioButton Content="Disabled" Margin="5" Foreground="White"/>
         </StackPanel>
 
-        <TextBlock Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Text="DataGrid表示初期化中..." FontSize="20"/>
+        <TextBlock Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"
+                   Text="DataGrid表示初期化中..." FontSize="20"/>
 
         <!--設定グリッド-->
         <DataGrid x:Name="grid" Grid.Row="2" Margin="5, 5, 0, 0" AutoGenerateColumns="False" Visibility="Collapsed"
@@ -36,7 +38,8 @@
                   CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeColumns="False"
                   CanUserResizeRows="False" CanUserSortColumns="False"
                   VirtualizingPanel.ScrollUnit="Pixel" MaxWidth="2000" MaxHeight="1200"
-                  HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden">
+                  HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"
+                  Background="Transparent">
             <DataGrid.InputBindings>
                 <KeyBinding Gesture="Ctrl+A" Command="ApplicationCommands.NotACommand"/>
             </DataGrid.InputBindings>
@@ -46,6 +49,11 @@
                     <EventSetter Event="PreviewMouseRightButtonDown" Handler="DataGridCell_PreviewMouseRightButtonDown"/>
                 </Style>
             </DataGrid.CellStyle>
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Background" Value="#202020"/>
+                </Style>
+            </DataGrid.RowStyle>
         </DataGrid>
 
         <!--閲覧ビュー-->
