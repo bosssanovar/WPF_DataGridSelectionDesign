@@ -36,7 +36,8 @@
                   CanUserResizeRows="False" CanUserSortColumns="False"
                   VirtualizingPanel.ScrollUnit="Pixel" MaxWidth="2000" MaxHeight="1200"
                   HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"
-                  HorizontalAlignment="Left" VerticalAlignment="Top">
+                  HorizontalAlignment="Left" VerticalAlignment="Top"
+                  SelectedCellsChanged="grid_SelectedCellsChanged">
             <DataGrid.InputBindings>
                 <KeyBinding Gesture="Ctrl+A" Command="ApplicationCommands.NotACommand"/>
             </DataGrid.InputBindings>
@@ -46,6 +47,7 @@
                     <EventSetter Event="PreviewMouseRightButtonDown" Handler="DataGridCell_PreviewMouseRightButtonDown"/>
                     <Setter Property="BorderThickness" Value="0.3"/>
                     <Setter Property="BorderBrush" Value="#1d1f20" />
+                    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter Property="Background" Value="#22FFFFFF" />
