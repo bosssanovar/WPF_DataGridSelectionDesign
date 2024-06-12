@@ -1,5 +1,6 @@
 ﻿using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
+
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -15,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+
 using static System.Net.Mime.MediaTypeNames;
 
 namespace WpfApp1
@@ -34,9 +36,16 @@ namespace WpfApp1
 
         public MainWindow2()
         {
+
             InitializeComponent();
 
             InitData(InitCulumnCount);
+
+            IsDataGridEnabled.Where(x => !x).Subscribe(
+                x =>
+                {
+                    grid.UnselectAllCells();
+                });
         }
 
         #region 画面の初期化
@@ -128,6 +137,11 @@ namespace WpfApp1
 
         private void DataGridCell_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            if (!IsDataGridEnabled.Value)
+            {
+                return;
+            }
+
             if (grid.SelectedCells.Count == 1)
             {
                 var columnIndex = DataGridHelper.GetSelectedColumnIndex(grid);
@@ -139,6 +153,11 @@ namespace WpfApp1
 
         private void DataGridCell_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
+            if (!IsDataGridEnabled.Value)
+            {
+                return;
+            }
+
             if (grid.SelectedCells.Count <= 1)
             {
                 grid.Focus();

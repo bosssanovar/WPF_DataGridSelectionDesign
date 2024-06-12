@@ -23,7 +23,7 @@
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5">
             <RadioButton Content="Enabled" Margin="5" Foreground="White" IsChecked="{Binding IsDataGridEnabled.Value}"/>
-            <RadioButton Content="Disabled" Margin="5" Foreground="White"/>
+            <RadioButton Content="Disabled（マーカーの色デザイン非対応）" Margin="5" Foreground="White"/>
         </StackPanel>
 
         <!--設定グリッド-->
