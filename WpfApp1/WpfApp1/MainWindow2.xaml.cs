@@ -26,7 +26,7 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow2 : Window
     {
-        private const int InitCulumnCount = 50;
+        private const int InitCulumnCount = 100;
 
         public ObservableCollection<Detail> Items { get; private set; } = new ObservableCollection<Detail>();
 

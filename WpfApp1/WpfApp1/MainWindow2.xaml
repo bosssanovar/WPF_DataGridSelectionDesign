@@ -35,7 +35,7 @@
                   CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserResizeColumns="False"
                   CanUserResizeRows="False" CanUserSortColumns="False"
                   VirtualizingPanel.ScrollUnit="Pixel" MaxWidth="2000" MaxHeight="1200"
-                  HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"
+                  HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible"
                   HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="0"
                   SelectedCellsChanged="grid_SelectedCellsChanged">
             <DataGrid.InputBindings>
